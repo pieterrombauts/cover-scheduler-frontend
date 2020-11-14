@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'App.css';
+import styled from 'styled-components';
+import StyledLeftSidebar from 'components/LeftSidebar'
+import StyledRightSidebar from 'components/RightSidebar'
 
-function App() {
+interface AppProps {
+  className?: string;
+}
+
+const App: React.FC<AppProps> = ( props ) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={props.className}>
+        <StyledLeftSidebar />
+        <StyledRightSidebar />
     </div>
   );
 }
 
-export default App;
+export default styled(App)`
+  width: 100%;
+  height: 100%;
+`;
