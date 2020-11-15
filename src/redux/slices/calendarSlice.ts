@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 
 const calendarSlice = createSlice({
   name: 'calendar',
-  initialState: { calendarDate: DateTime.local().toISO(), selectedDate: DateTime.local().toISO()},
+  initialState: { calendarDate: DateTime.local().toISODate(), selectedDate: DateTime.local().toISODate()},
   reducers: {
     updateSelectedDate(state, action) {
       state.selectedDate = action.payload.selectedDate;

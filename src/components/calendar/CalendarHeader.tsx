@@ -30,10 +30,10 @@ const CalendarHeader: React.FC<Props> = ( props ) => {
     }
     switch (direction) {
       case 'left':
-        props.updateCalendarDate({ calendarDate: calDate.minus( { month: 1 }).toISO() })
+        props.updateCalendarDate({ calendarDate: calDate.minus( { month: 1 }).toISODate() })
         return;
       case 'right':
-        props.updateCalendarDate({ calendarDate: calDate.plus( { month: 1 }).toISO() })
+        props.updateCalendarDate({ calendarDate: calDate.plus( { month: 1 }).toISODate() })
         return;
     }
   }
