@@ -43,7 +43,7 @@ export default styled(SessionList)`
   justify-content: center;
   align-items: center;
   height: 65px;
-  width: 250px;
+  width: 240px;
   border-radius: 5px;
   background-color: ${props => backgroundColor(props.session.status)};
   
