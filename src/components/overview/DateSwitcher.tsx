@@ -30,10 +30,10 @@ const DateSwitcher: React.FC<Props> = ( props ) => {
     }
     switch (direction) {
       case 'left':
-        props.updateSelectedDate({ selectedDate: selDate.minus( { week: 1 }).toISO() })
+        props.updateSelectedDate({ selectedDate: selDate.minus( { week: 1 }).toISODate() })
         return;
       case 'right':
-        props.updateSelectedDate({ selectedDate: selDate.plus( { week: 1 }).toISO() })
+        props.updateSelectedDate({ selectedDate: selDate.plus( { week: 1 }).toISODate() })
         return;
     }
   }
@@ -51,7 +51,7 @@ const DateSwitcher: React.FC<Props> = ( props ) => {
                 {DateTime.fromISO(props.selectedDate).set({ weekday: 2 }).hasSame(DateTime.fromISO(props.selectedDate).set({ weekday: 6 }), "year") ? "" : ` – ${DateTime.fromISO(props.selectedDate).set({ weekday: 6 }).toFormat('yyyy')}`}
               </p>
               <p id="dateswitcher-daymonth">
-                {`${DateTime.fromISO(props.selectedDate).set({ weekday: 2 }).toFormat('dd MMM')} – ${DateTime.fromISO(props.selectedDate).set({ weekday: 6 }).toFormat('dd MMM')}`}
+                {`${DateTime.fromISO(props.selectedDate).set({ weekday: 1 }).toFormat('dd MMM')} – ${DateTime.fromISO(props.selectedDate).set({ weekday: 5 }).toFormat('dd MMM')}`}
               </p>
             </>
           }
@@ -60,8 +60,9 @@ const DateSwitcher: React.FC<Props> = ( props ) => {
           <KeyboardArrowRightIcon fontSize="large"/>
         </IconButton>
       </div>
-      { props.selectedDate !== null && !Interval.fromDateTimes(DateTime.fromISO(props.selectedDate).set({ weekday: 1 }), DateTime.fromISO(props.selectedDate).set({ weekday: 7 })).contains(DateTime.local()) &&
-      <div id="dateswitcher-today" onClick={() => props.updateSelectedDate({ selectedDate: DateTime.local().toISO() })}>
+      {console.log(Interval.fromDateTimes(DateTime.fromISO(props.selectedDate!).set({ weekday: 1 }), DateTime.fromISO(props.selectedDate!).set({ weekday: 7 })))}
+      { props.selectedDate !== null && !Interval.fromDateTimes(DateTime.fromISO(props.selectedDate).set({ weekday: 1 }), DateTime.fromISO(props.selectedDate).set({ weekday: 7 }).plus({"day": 1})).contains(DateTime.local()) &&
+      <div id="dateswitcher-today" onClick={() => props.updateSelectedDate({ selectedDate: DateTime.local().toISODate() })}>
         <p>Today</p>
       </div>
       }
