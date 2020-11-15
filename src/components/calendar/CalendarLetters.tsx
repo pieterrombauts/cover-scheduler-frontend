@@ -8,12 +8,12 @@ interface CalendarLettersProps {
 const Calendar: React.FC<CalendarLettersProps> = ( props ) => {
   return(
     <div className={props.className}>
-      <p>S</p>
       <p>M</p>
       <p>T</p>
       <p>W</p>
       <p>T</p>
       <p>F</p>
+      <p>S</p>
       <p>S</p>
     </div>
   ); 

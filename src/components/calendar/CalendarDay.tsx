@@ -33,7 +33,7 @@ const handleBorderType = (date: DateTime) => {
 const CalendarDay: React.FC<Props> = ( props ) => {  
   const handleDateSelection = (e: React.MouseEvent, date: DateTime) => {
     e.preventDefault();
-    props.updateSelectedDate({ selectedDate: date.toString() });
+    props.updateSelectedDate({ selectedDate: date.toISODate() });
   };
 
   return(
