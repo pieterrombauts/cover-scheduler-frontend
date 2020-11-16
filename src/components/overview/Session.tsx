@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { RootState } from 'redux/reducers'
+import { connect, ConnectedProps } from 'react-redux';
+import { showModal, hideModal } from 'redux/slices/modalSlice'
 import { Session } from 'customTypes/session'
 import { STATUS } from 'constants/session'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -12,11 +15,21 @@ interface SessionListProps {
   session: Session;
 }
 
-const SessionList: React.FC<SessionListProps> = ( props ) => {
+const mapState = (state: RootState) => ({})
+
+const connector = connect(mapState, { showModal, hideModal });
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = PropsFromRedux & SessionListProps;
+
+const SessionList: React.FC<Props> = ( props ) => {
+  const handleClick = () => {
+    props.showModal({ modalType: "SESSION", modalProps: { session: props.session }});
+  }
+
   return(
-    <div className={props.className}>
-      <p className="cover_name">{props.session.cover_name}</p>
+    <div className={props.className} onClick={handleClick}>
       <p className="name">{props.session.name}</p>
+      <p className="cover_name">{props.session.cover_name}</p>
       {props.session.status === STATUS.COVERED && <CheckCircleIcon className={"status_icon"} fontSize={"small"}/>}
       {props.session.status === STATUS.CLOSED && <NotInterestedIcon className={"status_icon"} fontSize={"small"}/>}
       {props.session.status === STATUS.UNCOVERED && <ErrorIcon className={"status_icon"} fontSize={"small"}/>}
@@ -36,7 +49,7 @@ const backgroundColor = (status: STATUS) => {
   }
 }
 
-export default styled(SessionList)`
+const StyledSessionList = styled(SessionList)`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -46,6 +59,11 @@ export default styled(SessionList)`
   width: 240px;
   border-radius: 5px;
   background-color: ${props => backgroundColor(props.session.status)};
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(97%);
+  }
   
   p {
     margin: 0px;
@@ -72,3 +90,5 @@ export default styled(SessionList)`
     color: white;
   }
 `;
+
+export default connector(StyledSessionList);

@@ -19,6 +19,7 @@ function createWindow () {
   // Maximise the window on launch
   mainWindow.once('ready-to-show', () => {
     mainWindow.maximize();
+    mainWindow.setMenuBarVisibility(false);
     mainWindow.show();
   })
 

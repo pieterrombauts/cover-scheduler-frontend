@@ -20,7 +20,7 @@ const connector = connect(mapState, {});
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & PracticeCalSessionsProps;
 
-const sessions_list: Session[] = [{name: "Pieter Rombauts", cover_name: "Karl Rombauts", status: STATUS.NORMAL, date: DateTime.local()}, {name: "Sofie Piessens", cover_name: "Karl Rombauts", status: STATUS.COVERED, date: DateTime.local()}, {name: "Luk Rombauts", cover_name: "Karl Rombauts", status: STATUS.CLOSED, date: DateTime.local()}]
+const sessions_list: Session[] = [{id: 1, name: "Pieter Rombauts", cover_name: "Karl Rombauts", practice: "city", status: STATUS.NORMAL, date: "2020-11-17"}, {id: 2, name: "Sofie Piessens", cover_name: "Karl Rombauts", practice: "city", status: STATUS.COVERED, date: "2020-11-17"}, {id: 3, name: "Luk Rombauts", cover_name: "Karl Rombauts", practice: "city", status: STATUS.CLOSED, date: "2020-11-17"}]
 
 const PracticeCalSessions: React.FC<Props> = ( props ) => {
   return(
