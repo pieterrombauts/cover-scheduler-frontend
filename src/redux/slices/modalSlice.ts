@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 
 const modalSlice = createSlice({
   name: 'modal',
-  initialState: { modalType: 'SESSION' as (null | string), modalProps: { session: {id: 1, name: "Pieter Rombauts", cover_name: "Karl Rombauts", practice: "city", status: STATUS.NORMAL, date: "2020-11-17"}} as {}},
+  initialState: { modalType: null as (null | string), modalProps: {}},
   reducers: {
     showModal(state, action) {
       state.modalType = action.payload.modalType;

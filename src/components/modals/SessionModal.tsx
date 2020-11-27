@@ -5,11 +5,16 @@ import Button from 'react-bootstrap/Button';
 import { Session } from 'customTypes/session';
 import { capitalise } from 'utils/stringFuncs'
 import { DateTime } from 'luxon';
+import sendAsync from 'db/renderer'
 
 interface SessionModalProps {
   className?: string;
   onHide: () => void;
   session: Session;
+}
+
+const send = (sql: string) => {
+  sendAsync(sql).then((result) => console.log(result));
 }
 
 const SessionModal: React.FC<SessionModalProps> = ( props ) => {
@@ -21,6 +26,9 @@ const SessionModal: React.FC<SessionModalProps> = ( props ) => {
         </Modal.Header>
         <Modal.Body>
           <p>{props.session.name}</p>
+          <Button variant={"primary"} onClick={() => send("SELECT * FROM STAFF")}>
+            Test DB
+          </Button>
         </Modal.Body>
         <Modal.Footer>
           <Button variant={"secondary"} onClick={props.onHide}>
