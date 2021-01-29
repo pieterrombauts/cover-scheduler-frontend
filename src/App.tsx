@@ -3,7 +3,7 @@ import 'App.css';
 import styled from 'styled-components';
 import StyledLeftSidebar from 'components/LeftSidebar'
 import StyledRightSidebar from 'components/RightSidebar'
-import ModalRoot from 'components/modals/ModalRoot';
+import StyledModalRoot from 'components/modals/ModalRoot';
 import { ReactQueryCacheProvider, QueryCache } from 'react-query';
 import { ReactQueryDevtools } from 'react-query-devtools';
 
@@ -11,13 +11,19 @@ interface AppProps {
   className?: string;
 }
 
-const queryCache = new QueryCache();
+const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      refetchOnWindowFocus: false,
+    }
+  }
+});
 
 const App: React.FC<AppProps> = ( props ) => {
   return (
     <div className={props.className}>
         <ReactQueryCacheProvider queryCache={queryCache}>
-          <ModalRoot />
+          <StyledModalRoot />
           <StyledLeftSidebar />
           <StyledRightSidebar />
           <ReactQueryDevtools initialIsOpen />

@@ -3,6 +3,9 @@ import { RootState } from 'redux/reducers'
 import { connect, ConnectedProps } from 'react-redux';
 import { showModal, hideModal } from 'redux/slices/modalSlice'
 import StyledSessionModal from 'components/modals/SessionModal'
+import StyledStaffEditModal from 'components/modals/StaffEditModal'
+import MODAL_CLOSE from 'constants/modal';
+import styled from 'styled-components';
 
 interface ModalRootProps {
   className?: string;
@@ -18,12 +21,13 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & ModalRootProps;
 
 const MODAL_COMPONENTS: {[key: string]: any} = {
-  "SESSION": StyledSessionModal
+  "SESSION": StyledSessionModal,
+  "STAFF": StyledStaffEditModal,
 }
 
 const ModalRoot: React.FC<Props> = ( props ) => {
   const handleClose = () => {
-    props.showModal({ modalType: null, modalProps: {}});
+    props.showModal(MODAL_CLOSE);
     console.log("Modal close ran...");
   }
 

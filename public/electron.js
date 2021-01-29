@@ -35,7 +35,7 @@ function createWindow () {
 
 app.on('ready', async () => {
   await session.defaultSession.loadExtension(
-    path.join(os.homedir(),'AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.10.0_0')
+    path.join(os.homedir(),'AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.10.1_5')
   )
   await session.defaultSession.loadExtension(
     path.join(os.homedir(),'AppData/Local/Google/Chrome/User Data/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.0_0')

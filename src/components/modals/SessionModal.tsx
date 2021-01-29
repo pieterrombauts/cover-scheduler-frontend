@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Session } from 'customTypes/session';
 import { capitalise } from 'utils/stringFuncs'
 import { DateTime } from 'luxon';
-import sendAsync from 'db/renderer'
+import { db_get } from 'db/renderer'
 
 interface SessionModalProps {
   className?: string;
@@ -14,7 +14,7 @@ interface SessionModalProps {
 }
 
 const send = (sql: string) => {
-  sendAsync(sql).then((result) => console.log(result));
+  db_get(sql, []).then((result) => console.log(result));
 }
 
 const SessionModal: React.FC<SessionModalProps> = ( props ) => {

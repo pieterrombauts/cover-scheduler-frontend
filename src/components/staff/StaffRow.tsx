@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { RootState } from 'redux/reducers'
+import { connect, ConnectedProps } from 'react-redux';
+import { showModal, hideModal } from 'redux/slices/modalSlice'
 import { Staff } from 'customTypes/staff';
 import StyledAvailabilityWeek from 'components/staff/AvailabilityWeek'
 import IconButton from '@material-ui/core/IconButton'
@@ -15,14 +18,15 @@ interface StaffRowProps {
   open: boolean;
 }
 
-const StaffRow: React.FC<StaffRowProps> = ( props ) => {
-  const [edit, setEdit] = useState<boolean>(false);
+const mapState = (state: RootState) => ({})
 
-  const handleSave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (edit) {
-      // Handle saving here
-    }
-    setEdit(!edit);
+const connector = connect(mapState, { showModal, hideModal });
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = PropsFromRedux & StaffRowProps;
+
+const StaffRow: React.FC<Props> = ( props ) => {
+  const handleClick = () => {
+    props.showModal({ modalType: "STAFF", modalProps: { staff: props.staff }});
   }
 
   return (
@@ -40,15 +44,15 @@ const StaffRow: React.FC<StaffRowProps> = ( props ) => {
         </IconButton>
       </div>
       <div className={"staff_update"}>
-        <IconButton size="medium" onClick={(e) => handleSave(e)}>
-          {edit ? <SaveIcon /> : <EditIcon />}
+        <IconButton size="medium" onClick={(e) => handleClick()}>
+          <EditIcon />
         </IconButton>
       </div>
     </div>
   );
 }
 
-export default styled(StaffRow)`
+const StyledStaffRow = styled(StaffRow)`
   display: flex;
   padding: 0px 20px;
   align-items: center;
@@ -80,3 +84,5 @@ export default styled(StaffRow)`
     }
   }
 `;
+
+export default connector(StyledStaffRow);
