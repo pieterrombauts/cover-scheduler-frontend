@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { db_get } from 'db/renderer';
 import StyledStaffListItem from 'components/staff/StaffListItem'
 import { Staff as StaffType } from 'customTypes/staff';
 import { useQueryCache, useQuery } from 'react-query';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 interface StaffDashboardProps {
   className?: string;
@@ -18,7 +19,26 @@ function useStaff() {
 const StaffDashboard: React.FC<StaffDashboardProps> = ( props ) => {
   const cache = useQueryCache();
   const { data } = useStaff();
-  
+  const [ sort, setSort ] = useState<{field: keyof StaffType, asc: boolean} | null>(null)
+
+  const dataSortFn = (staff_a: StaffType, staff_b: StaffType) => {
+    if (sort !== null) {
+      if (staff_a[sort.field] > staff_b[sort.field]) return (sort.asc ? 1 : -1)
+      if (staff_a[sort.field] < staff_b[sort.field]) return (sort.asc ? -1 : 1)
+    }
+    if (staff_a.name > staff_b.name) return 1
+    if (staff_a.name < staff_b.name) return -1
+    return 0;
+  }
+
+  const setSortCol = (column: keyof StaffType) => {
+    if (sort !== null && column == sort.field) {
+      setSort({ field: sort.field, asc: !sort.asc})
+    } else {
+      setSort({ field: column, asc: true})
+    }
+  }
+
   const handleScroll = () => {
     const top_blur = document.getElementById("staff_list_before");
     const bottom_blur = document.getElementById("staff_list_after");
@@ -39,20 +59,36 @@ const StaffDashboard: React.FC<StaffDashboardProps> = ( props ) => {
     }
   }
 
+  const arrowClassNames = (column: keyof StaffType) => {
+    return `${(sort?.asc == false && sort?.field == column) && "descending"} ${sort?.field == column && "sort_visible"}`
+  }
+
   return (
     <div className={props.className}>
       <div className={"staff_headers"}>
-        <p className={"staff_name"}>Name</p>
-        <p className={"staff_email"}>Email Address</p>
-        <p className={"staff_phone"}>Mobile</p>
-        <p className={"staff_type"}>Type</p>
+        <p onClick={() => setSortCol("name")} className={"staff_name"}>
+          Name
+          <ArrowDownwardIcon id={"staff_name_sort"} className={arrowClassNames("name")} fontSize="small"/>
+        </p>
+        <p onClick={() => setSortCol("email")} className={"staff_email"}>
+          Email Address
+          <ArrowDownwardIcon id={"staff_email_sort"} className={arrowClassNames("email")} fontSize="small"/>
+        </p>
+        <p onClick={() => setSortCol("phone")} className={"staff_phone"}>
+          Mobile
+          <ArrowDownwardIcon id={"staff_phone_sort"} className={arrowClassNames("phone")} fontSize="small"/>
+        </p>
+        <p onClick={() => setSortCol("type")} className={"staff_type"}>
+          Type
+          <ArrowDownwardIcon id={"staff_type_sort"} className={arrowClassNames("type")} fontSize="small"/>
+        </p>
         <p className={"staff_avail"}>Availability</p>
         <p className={"staff_expand"}>Expand</p>
         <p className={"staff_update"}>Update</p>
       </div>
       <div id={"staff_list"} onScroll={handleScroll}>
         <div id={"staff_list_before"} />
-        {data !== undefined && data.map((person, index) => (
+        {data !== undefined && (data.sort(dataSortFn)).map((person, index) => (
           <StyledStaffListItem key={index} person={person} />
         ))}
         <div id={"staff_list_after"} />
@@ -124,18 +160,64 @@ export default styled(StaffDashboard)`
       margin-bottom: 5px;
       font-family: 'Nunito', sans-serif;
       font-size: 16px;
+      user-select: none;
+      transition: color 0.2s;
+    }
+
+    p:not(.staff_avail):not(.staff_expand):not(.staff_update) {
+      cursor: pointer;
+    }
+
+    p:hover:not(.staff_avail):not(.staff_expand):not(.staff_update) {
+      color: #777777;
     }
   }
+
   .staff_name p { font-weight: 800 !important; }
   .staff_avail p { color: white; }
-  .staff_name { width: 200px; }
-  .staff_email { width: 300px; }
-  .staff_phone { width: 180px; }
-  .staff_type { width: 140px; }
-  .staff_avail { width: 200px; }
+
+  .staff_name { 
+    display: flex;
+    width: 200px; 
+  }
+  .staff_email { 
+    display: flex;
+    width: 300px; 
+  }
+  .staff_phone { 
+    display: flex;
+    width: 180px; 
+  }
+  .staff_type {
+    display: flex;
+    width: 140px; 
+    }
+  .staff_avail {
+    width: 200px; 
+  }
   .staff_expand, .staff_update {
     display: flex;
     justify-content: center;
     width: 80px; 
   }
+  .descending {
+    transform: rotate(-180deg)
+  }
+  #staff_name_sort, #staff_email_sort, #staff_phone_sort, #staff_type_sort {
+    margin-left: 5px;
+    visibility: hidden;
+    opacity: 0%;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .staff_name:hover #staff_name_sort:not(.sort_visible),
+  .staff_email:hover #staff_email_sort:not(.sort_visible),
+  .staff_phone:hover #staff_phone_sort:not(.sort_visible),
+  .staff_type:hover #staff_type_sort:not(.sort_visible) {
+    visibility: visible;
+    opacity: 50%;
+  }
+  .sort_visible {
+      visibility: visible !important;
+      opacity: 100% !important;
+    }
 `;

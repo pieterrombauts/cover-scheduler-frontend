@@ -8,7 +8,7 @@ interface StaffDashboardFiltersProps {
 
 const StaffDashboardFilters: React.FC<StaffDashboardFiltersProps> = ( props ) => {
   return (
-    
+    <div></div>
   );
 }
 
