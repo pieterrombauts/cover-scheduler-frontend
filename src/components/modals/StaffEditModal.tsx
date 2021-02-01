@@ -8,6 +8,8 @@ import ConfirmationModal from 'components/modals/ConfirmationModal';
 import { capitalise } from 'utils/stringFuncs'
 import { db_get, db_update, db_delete } from 'db/renderer'
 import { Staff } from 'customTypes/staff';
+import { AvailType } from 'customTypes/availability'
+import { encodeAvail, decodeAvail } from 'utils/availEncoding'
 import { useQueryCache, useQuery } from 'react-query';
 import { STAFF_TYPE } from 'constants/staff';
 
@@ -34,7 +36,6 @@ function deleteSingleStaff(id: number) {
 }
 
 // Type definitions for check-boxes and drop-down
-type AvailType = {mon: boolean, tue: boolean, wed: boolean, thu: boolean, fri: boolean};
 const typeOptions = [
   {value: STAFF_TYPE.EMPLOYEE, label: capitalise(STAFF_TYPE.EMPLOYEE)},
   {value: STAFF_TYPE.COVER, label: capitalise(STAFF_TYPE.COVER)}
@@ -62,28 +63,6 @@ const StaffEditModal: React.FC<StaffEditModalProps> = ( props ) => {
       if (!Array.isArray(value)) {
         setType(value.value)
       }
-    }
-  }
-
-  const encodeAvail = (obj: AvailType) => {
-    let encoded_string = "";
-    for (const [key, value] of Object.entries(obj)) {
-      if (value) {
-        encoded_string = encoded_string + "1";
-      } else {
-        encoded_string = encoded_string + "0";
-      }
-    }
-    console.log(encoded_string);
-    return encoded_string;
-  }
-  const decodeAvail = (string: string) => {
-    return {
-      mon: (string.charAt(0) === "1"),
-      tue: (string.charAt(1) === "1"),
-      wed: (string.charAt(2) === "1"),
-      thu: (string.charAt(3) === "1"),
-      fri: (string.charAt(4) === "1")
     }
   }
 

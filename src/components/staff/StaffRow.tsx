@@ -5,6 +5,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { showModal, hideModal } from 'redux/slices/modalSlice'
 import { Staff } from 'customTypes/staff';
 import StyledAvailabilityWeek from 'components/staff/AvailabilityWeek'
+import { decodeAvail } from 'utils/availEncoding'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import EditIcon from '@material-ui/icons/Edit';
@@ -36,7 +37,7 @@ const StaffRow: React.FC<Props> = ( props ) => {
       <p className={"staff_phone"}>{formatMobile(props.staff.phone)}</p>
       <p className={"staff_type"}>{capitalise(props.staff.type)}</p>
       <div className={"staff_avail"}>
-        <StyledAvailabilityWeek availability={props.staff.availability}/>
+        <StyledAvailabilityWeek availability={decodeAvail(props.staff.availability)}/>
       </div>
       <div className={"staff_expand"}>
         <IconButton size="medium" onClick={() => props.handleOpen()}>

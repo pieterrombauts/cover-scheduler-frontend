@@ -1,20 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledAvailabilityDay from 'components/staff/AvailabilityDay'
+import {AvailType} from 'customTypes/availability'
 
 interface AvailabilityWeekProps {
   className?: string;
-  availability: string;
+  availability: AvailType;
+  onDayClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const AvailabilityWeek: React.FC<AvailabilityWeekProps> = ( props ) => {
   return (
     <div className={props.className}>
-      <StyledAvailabilityDay className={"avail_day"} letter={"M"} avail={props.availability.charAt(0)} />
-      <StyledAvailabilityDay className={"avail_day"} letter={"T"} avail={props.availability.charAt(1)} />
-      <StyledAvailabilityDay className={"avail_day"} letter={"W"} avail={props.availability.charAt(2)} />
-      <StyledAvailabilityDay className={"avail_day"} letter={"T"} avail={props.availability.charAt(3)} />
-      <StyledAvailabilityDay className={"avail_day"} letter={"F"} avail={props.availability.charAt(4)} />
+      <StyledAvailabilityDay day={"mon"} avail={props.availability.mon} onDayClick={props.onDayClick}/>
+      <StyledAvailabilityDay day={"tue"} avail={props.availability.tue} onDayClick={props.onDayClick}/>
+      <StyledAvailabilityDay day={"wed"} avail={props.availability.wed} onDayClick={props.onDayClick}/>
+      <StyledAvailabilityDay day={"thu"} avail={props.availability.thu} onDayClick={props.onDayClick}/>
+      <StyledAvailabilityDay day={"fri"} avail={props.availability.fri} onDayClick={props.onDayClick}/>
     </div>
   );
 }

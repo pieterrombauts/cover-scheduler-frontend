@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { db_get } from 'db/renderer';
-import StyledStaffListItem from 'components/staff/StaffListItem'
+import StyledStaffListItem from 'components/staff/StaffListItem';
 import { Staff as StaffType } from 'customTypes/staff';
 import { useQueryCache, useQuery } from 'react-query';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import { AvailType } from 'customTypes/availability';
+import { decodeAvail } from 'utils/availEncoding';
 
 interface StaffDashboardProps {
   className?: string;
+  nameSearch: string;
+  emailSearch: string;
+  phoneSearch: string;
+  typeSearch: string;
+  availSearch: AvailType;
 }
 
 function useStaff() {
@@ -19,7 +26,26 @@ function useStaff() {
 const StaffDashboard: React.FC<StaffDashboardProps> = ( props ) => {
   const cache = useQueryCache();
   const { data } = useStaff();
+  const [ filteredData, setFilteredData ] = useState<StaffType[]>([]);
   const [ sort, setSort ] = useState<{field: keyof StaffType, asc: boolean} | null>(null)
+  useEffect(() => {
+    if (data !== null && data !== undefined) {
+      let tempFilter = data;
+      if (props.nameSearch !== "") tempFilter = tempFilter.filter(staff => staff.name.toLowerCase().includes(props.nameSearch.toLowerCase()));
+      if (props.emailSearch !== "") tempFilter = tempFilter.filter(staff => staff.email.toLowerCase().includes(props.emailSearch.toLowerCase()));
+      if (props.phoneSearch !== "") tempFilter = tempFilter.filter(staff => staff.phone.includes(props.phoneSearch));
+      if (props.typeSearch !== "") tempFilter = tempFilter.filter(staff => staff.type === props.typeSearch);
+      let daysFilter = Object.keys(props.availSearch).filter((key) => props.availSearch[key as keyof AvailType] === true)
+      if (daysFilter.length > 0) tempFilter = tempFilter.filter(staff => {
+        let staffAvailability = decodeAvail(staff.availability); 
+        for (let i = 0; i < daysFilter.length; i++) {
+          if (!staffAvailability[daysFilter[i] as keyof AvailType]) return false;
+        }
+        return true;
+      })
+      setFilteredData(tempFilter);
+    }
+  }, [data, props.nameSearch, props.emailSearch, props.phoneSearch, props.typeSearch, props.availSearch])
 
   const dataSortFn = (staff_a: StaffType, staff_b: StaffType) => {
     if (sort !== null) {
@@ -88,9 +114,10 @@ const StaffDashboard: React.FC<StaffDashboardProps> = ( props ) => {
       </div>
       <div id={"staff_list"} onScroll={handleScroll}>
         <div id={"staff_list_before"} />
-        {data !== undefined && (data.sort(dataSortFn)).map((person, index) => (
+        {filteredData !== undefined && (filteredData.sort(dataSortFn)).map((person, index) => (
           <StyledStaffListItem key={index} person={person} />
         ))}
+        {filteredData.length === 0 && <p id="staff_filter_no_results">No matching results found!</p>}
         <div id={"staff_list_after"} />
       </div>
     </div>
@@ -106,7 +133,8 @@ export default styled(StaffDashboard)`
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 3px 6px 0px rgba(49, 90, 123, 0.13);
-  max-height: 100%;
+  max-height: 88%;
+  min-height: 88%;
 
   #staff_list_before {
     opacity: 0;
@@ -217,7 +245,11 @@ export default styled(StaffDashboard)`
     opacity: 50%;
   }
   .sort_visible {
-      visibility: visible !important;
-      opacity: 100% !important;
-    }
+    visibility: visible !important;
+    opacity: 100% !important;
+  }
+  #staff_filter_no_results {
+    margin-top: 30px;
+    text-align: center;
+  }
 `;
