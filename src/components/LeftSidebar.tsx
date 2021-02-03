@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import StyledOverview from 'components/overview/Overview'
 import StyledStaff from 'components/staff/Staff'
+import StyledSessionConfig from 'components/sess_conf/SessionConfig'
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab'
 import IconButton from '@material-ui/core/IconButton'
@@ -48,7 +49,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ( props ) => {
             <StyledStaff />
           </Tab.Pane>
           <Tab.Pane eventKey="settings">
-            <div></div>
+            <StyledSessionConfig />
           </Tab.Pane>
           <Tab.Pane eventKey="mail">
             <div></div>

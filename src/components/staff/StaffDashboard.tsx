@@ -5,7 +5,7 @@ import StyledStaffListItem from 'components/staff/StaffListItem';
 import { Staff as StaffType } from 'customTypes/staff';
 import { useQueryCache, useQuery } from 'react-query';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import { AvailType } from 'customTypes/availability';
+import { AvailType } from 'customTypes/staff'
 import { decodeAvail } from 'utils/availEncoding';
 
 interface StaffDashboardProps {
@@ -109,7 +109,6 @@ const StaffDashboard: React.FC<StaffDashboardProps> = ( props ) => {
           <ArrowDownwardIcon id={"staff_type_sort"} className={arrowClassNames("type")} fontSize="small"/>
         </p>
         <p className={"staff_avail"}>Availability</p>
-        <p className={"staff_expand"}>Expand</p>
         <p className={"staff_update"}>Update</p>
       </div>
       <div id={"staff_list"} onScroll={handleScroll}>
@@ -206,24 +205,24 @@ export default styled(StaffDashboard)`
 
   .staff_name { 
     display: flex;
-    width: 200px; 
+    width: 230px; 
   }
   .staff_email { 
     display: flex;
-    width: 300px; 
+    width: 340px; 
   }
   .staff_phone { 
     display: flex;
-    width: 180px; 
+    width: 190px; 
   }
   .staff_type {
     display: flex;
-    width: 140px; 
+    width: 150px; 
     }
   .staff_avail {
-    width: 200px; 
+    width: 210px; 
   }
-  .staff_expand, .staff_update {
+  .staff_update {
     display: flex;
     justify-content: center;
     width: 80px; 

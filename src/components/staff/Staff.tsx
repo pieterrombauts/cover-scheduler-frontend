@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import StyledStaffDashboard from 'components/staff/StaffDashboard'
 import StaffDashboardFilters from 'components/staff/StaffDashboardFilters';
-import { AvailType } from 'customTypes/availability';
+import { AvailType } from 'customTypes/staff';
 
 interface StaffProps {
   className?: string;

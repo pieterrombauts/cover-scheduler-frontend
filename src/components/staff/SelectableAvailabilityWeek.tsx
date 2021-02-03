@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledAvailabilityWeek from 'components/staff/AvailabilityWeek'
-import {AvailType} from 'customTypes/availability'
+import {AvailType} from 'customTypes/staff'
 
 interface SelectableAvailabilityWeekProps {
   className?: string;

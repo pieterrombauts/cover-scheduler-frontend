@@ -1,4 +1,4 @@
-import { AvailType } from 'customTypes/availability'
+import { AvailType } from 'customTypes/staff'
 
 export const encodeAvail = (obj: AvailType) => {
   let encoded_string = "";
@@ -12,12 +12,16 @@ export const encodeAvail = (obj: AvailType) => {
   console.log(encoded_string);
   return encoded_string;
 }
-export const decodeAvail = (string: string) => {
-  return {
-    mon: (string.charAt(0) === "1"),
-    tue: (string.charAt(1) === "1"),
-    wed: (string.charAt(2) === "1"),
-    thu: (string.charAt(3) === "1"),
-    fri: (string.charAt(4) === "1")
+export const decodeAvail = (avail: string | AvailType) => {
+  if (typeof avail === 'string') {
+    return {
+      mon: (avail.charAt(0) === "1"),
+      tue: (avail.charAt(1) === "1"),
+      wed: (avail.charAt(2) === "1"),
+      thu: (avail.charAt(3) === "1"),
+      fri: (avail.charAt(4) === "1")
+    }
+  } else {
+    return avail;
   }
 }

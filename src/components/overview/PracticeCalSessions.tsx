@@ -60,7 +60,7 @@ const StyledPracticeCalSessions = styled(PracticeCalSessions)`
     display: flex;
   }
 
-  .day_col {
+  .practice_days .day_col:not(:last-child) {
     margin-right: 10px;
   }
 `;

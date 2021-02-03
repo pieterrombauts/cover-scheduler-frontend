@@ -26,12 +26,13 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & StaffRowProps;
 
 const StaffRow: React.FC<Props> = ( props ) => {
-  const handleClick = () => {
-    props.showModal({ modalType: "STAFF", modalProps: { staff: props.staff }});
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    props.showModal({ modalType: "STAFF_EDIT", modalProps: { staff: props.staff }});
+    e.stopPropagation();
   }
 
   return (
-    <div className={props.className}>
+    <div className={props.className} onClick={props.handleOpen}>
       <p className={"staff_name"}>{props.staff.name}</p>
       <p className={"staff_email"}>{props.staff.email}</p>
       <p className={"staff_phone"}>{formatMobile(props.staff.phone)}</p>
@@ -39,13 +40,13 @@ const StaffRow: React.FC<Props> = ( props ) => {
       <div className={"staff_avail"}>
         <StyledAvailabilityWeek availability={decodeAvail(props.staff.availability)}/>
       </div>
-      <div className={"staff_expand"}>
+      {/* <div className={"staff_expand"}>
         <IconButton size="medium" onClick={() => props.handleOpen()}>
           <ArrowLeft className={`${props.open ? "down" : ""}`}/>
         </IconButton>
-      </div>
+      </div> */}
       <div className={"staff_update"}>
-        <IconButton size="medium" onClick={(e) => handleClick()}>
+        <IconButton size="medium" onClick={(e) => handleClick(e)}>
           <EditIcon />
         </IconButton>
       </div>
@@ -60,6 +61,7 @@ const StyledStaffRow = styled(StaffRow)`
   height: 65px;
   background-color: ${props => props.staff.on_leave ? "#FFBEBE" : "#E4F0F8"};
   border-radius: 5px;
+  cursor: pointer;
 
   p {
     margin: 0px;

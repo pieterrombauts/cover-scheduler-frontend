@@ -12,6 +12,18 @@ interface ConfirmationModalProps {
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ( props ) => {
+  const calculateBtnVariant = (fn: string) => {
+    switch (fn) {
+      case "update":
+        return "success";
+      case "add":
+        return "success";
+      case "delete":
+        return "danger";
+    }
+    return "success";
+  }
+  
   return(
     <>
       <Modal.Header closeButton>
@@ -24,7 +36,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ( props ) => {
         <Button variant={"secondary"} onClick={props.onHide}>
           Cancel
         </Button>
-        <Button variant={props.function == "update" ? "success" : "danger"} onClick={() => {props.onHide(); props.onConfirm(); }}>
+        <Button variant={`${calculateBtnVariant(props.function)}`} onClick={() => {props.onHide(); props.onConfirm(); }}>
           Confirm
         </Button>
       </Modal.Footer>

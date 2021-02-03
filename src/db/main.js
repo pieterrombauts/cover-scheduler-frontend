@@ -11,6 +11,15 @@ ipcMain.on('db-get', (event, sql, object) => {
   })
 })
 
+ipcMain.on('db-insert', (event, sql, object) => {
+  console.log('SQL: ' + sql);
+  console.log(object);
+  database.run(sql, object, (err) => {
+    event.reply('db-insert-reply', err)
+    console.log(err);
+  });
+})
+
 ipcMain.on('db-update', (event, sql, object) => {
   database.run(sql, object, (err) => {
     event.reply('db-update-reply', err)

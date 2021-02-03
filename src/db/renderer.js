@@ -11,6 +11,17 @@ export function db_get(sql, object) {
   })
 }
 
+export function db_insert(sql, object) {
+  return new Promise((resolve) => {
+    ipcRenderer.once('db-insert-reply', (_, arg) => {
+      resolve(arg);
+    });
+    ipcRenderer.send('db-insert', sql, object)
+    console.log('SQL: ' + sql);
+    console.log(object);
+  })
+}
+
 export function db_update(sql, object) {
   return new Promise((resolve) => {
     ipcRenderer.once('db-update-reply', (_, arg) => {

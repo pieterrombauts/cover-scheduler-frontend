@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledAvailabilityDay from 'components/staff/AvailabilityDay'
-import {AvailType} from 'customTypes/availability'
+import { AvailType } from 'customTypes/staff'
 
 interface AvailabilityWeekProps {
   className?: string;

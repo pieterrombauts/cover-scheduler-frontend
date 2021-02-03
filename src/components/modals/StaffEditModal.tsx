@@ -8,7 +8,7 @@ import ConfirmationModal from 'components/modals/ConfirmationModal';
 import { capitalise } from 'utils/stringFuncs'
 import { db_get, db_update, db_delete } from 'db/renderer'
 import { Staff } from 'customTypes/staff';
-import { AvailType } from 'customTypes/availability'
+import { AvailType } from 'customTypes/staff'
 import { encodeAvail, decodeAvail } from 'utils/availEncoding'
 import { useQueryCache, useQuery } from 'react-query';
 import { STAFF_TYPE } from 'constants/staff';
