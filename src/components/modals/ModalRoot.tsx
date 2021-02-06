@@ -5,6 +5,7 @@ import { showModal, hideModal } from 'redux/slices/modalSlice'
 import StyledSessionModal from 'components/modals/SessionModal'
 import StyledStaffEditModal from 'components/modals/StaffEditModal'
 import StyledStaffAddModal from 'components/modals/StaffAddModal'
+import StyledSessConfConfirmModal from 'components/modals/SessConfConfirmModal'
 import MODAL_CLOSE from 'constants/modal';
 
 interface ModalRootProps {
@@ -23,7 +24,8 @@ type Props = PropsFromRedux & ModalRootProps;
 const MODAL_COMPONENTS: {[key: string]: any} = {
   "SESSION": StyledSessionModal,
   "STAFF_EDIT": StyledStaffEditModal,
-  "STAFF_ADD": StyledStaffAddModal
+  "STAFF_ADD": StyledStaffAddModal,
+  "SESSCONF_CONFIRM": StyledSessConfConfirmModal
 }
 
 const ModalRoot: React.FC<Props> = ( props ) => {

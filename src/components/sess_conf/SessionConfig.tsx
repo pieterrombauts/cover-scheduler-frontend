@@ -5,21 +5,30 @@ import Button from 'react-bootstrap/Button';
 import { SessionConfig as SessionConfigType } from 'customTypes/sess_conf';
 import { useQuery, useQueryCache, useMutation } from 'react-query';
 import { db_get, db_update_bulk } from 'db/renderer';
+import { connect, ConnectedProps } from 'react-redux';
+import { RootState } from 'redux/reducers';
+import { showModal, hideModal } from 'redux/slices/modalSlice';
 
 interface SessionConfigProps {
   className?: string;
 }
 
-function useSessionConf() {
-  return useQuery<SessionConfigType[], Error>("sess_conf", () => {
-    return db_get('SELECT * FROM SESS_CONF', []);
-  })
-}
+const mapState = (state: RootState) => ({})
 
-const SessionConfig: React.FC<SessionConfigProps> = ( props ) => {
+const connector = connect(mapState, { showModal, hideModal });
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = PropsFromRedux & SessionConfigProps;
+
+const SessionConfig: React.FC<Props> = ( props ) => {
   const cache = useQueryCache();
   const { data } = useSessionConf();
 
+  function useSessionConf() {
+    return useQuery<SessionConfigType[], Error>("sess_conf", () => {
+      return db_get('SELECT * FROM SESS_CONF', []);
+    })
+  }
+  
   // React-Query statement to update all session configs in SQLite
   const [updateSessionConfig] = useMutation((newSessionConfig: SessionConfigType[]) =>
     db_update_bulk('UPDATE SESS_CONF SET staff = $staff, staff_alt = $staff_alt WHERE practice = $practice AND day = $day AND session = $session', 
@@ -54,9 +63,45 @@ const SessionConfig: React.FC<SessionConfigProps> = ( props ) => {
   const validateDuplicates = () => {
     const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
     return days.filter(day => {
-      let day_config_staff = sessionConf.filter(conf => conf.day === day).flatMap(conf => [conf.staff, conf.staff_alt]).filter(staff => staff !== null);
-      return new Set(day_config_staff).size !== day_config_staff.length
+      const day_config_staff = sessionConf.filter(conf => conf.day === day).map(conf => conf.staff).filter(staff => staff !== null);
+      const day_config_staff_alt = sessionConf.filter(conf => conf.day === day).map(conf => conf.staff_alt).filter(staff => staff !== null);
+      return ((new Set(day_config_staff).size !== day_config_staff.length) || (new Set(day_config_staff_alt).size !== day_config_staff_alt.length))
     })
+  }
+
+  const onSaveClick = () => {
+    const duplicates = validateDuplicates();
+    if (duplicates.length > 0) {
+
+    } else {
+      props.showModal({ 
+        modalType: "SESSCONF_CONFIRM",
+        modalProps: {
+          message: "Are you sure you want to save these changes to the session configuration?",
+          fn: "update",
+          onConfirm: onSaveConfirmClick 
+        }
+      })
+    }
+  }
+
+  const onSaveConfirmClick = () => {
+    updateSessionConfig(sessionConf);
+  }
+
+  const onRevertClick = () => {
+    props.showModal({ 
+      modalType: "SESSCONF_CONFIRM",
+      modalProps: {
+        message: "Are you sure you want to revert these changes to the session configuration?",
+        fn: "delete",
+        onConfirm: onRevertConfirmClick 
+      }
+    })
+  }
+
+  const onRevertConfirmClick = () => {
+    if (data !== undefined) setSessionConf(data)
   }
 
   return(
@@ -64,14 +109,14 @@ const SessionConfig: React.FC<SessionConfigProps> = ( props ) => {
       <StyledPracticeConfigWeek practice="city" config={sessionConf.filter((conf: SessionConfigType) => conf.practice === "city")} onSelect={handleSelect} />
       <StyledPracticeConfigWeek practice="peninsula" config={sessionConf.filter((conf: SessionConfigType) => conf.practice === "peninsula")} onSelect={handleSelect} />
       <div id="sess_conf_btns">
-        <Button variant="secondary" onClick={() => {if (data !== undefined) setSessionConf(data)}}>Revert Changes</Button>
-        <Button variant="success" onClick={() => {updateSessionConfig(sessionConf); console.log(validateDuplicates())}}>Save Configuration</Button>
+        <Button variant="secondary" onClick={onRevertClick}>Revert Changes</Button>
+        <Button variant="success" onClick={onSaveClick}>Save Configuration</Button>
       </div>
     </div>
   ); 
 }
 
-export default styled(SessionConfig)`
+const StyledSessionConfig = styled(SessionConfig)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,3 +135,4 @@ export default styled(SessionConfig)`
   }
 `;
 
+export default connector(StyledSessionConfig);
