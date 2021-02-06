@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledSession from 'components/overview/Session';
-import { STATUS } from 'constants/session';
 import { DateTime } from 'luxon';
 import { Session } from 'customTypes/session';
 

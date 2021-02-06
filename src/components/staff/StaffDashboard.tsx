@@ -58,7 +58,7 @@ const StaffDashboard: React.FC<StaffDashboardProps> = ( props ) => {
   }
 
   const setSortCol = (column: keyof StaffType) => {
-    if (sort !== null && column == sort.field) {
+    if (sort !== null && column === sort.field) {
       setSort({ field: sort.field, asc: !sort.asc})
     } else {
       setSort({ field: column, asc: true})
@@ -86,7 +86,7 @@ const StaffDashboard: React.FC<StaffDashboardProps> = ( props ) => {
   }
 
   const arrowClassNames = (column: keyof StaffType) => {
-    return `${(sort?.asc == false && sort?.field == column) && "descending"} ${sort?.field == column && "sort_visible"}`
+    return `${(sort?.asc === false && sort?.field === column) && "descending"} ${sort?.field === column && "sort_visible"}`
   }
 
   return (

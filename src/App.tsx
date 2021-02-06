@@ -26,7 +26,7 @@ const App: React.FC<AppProps> = ( props ) => {
           <StyledModalRoot />
           <StyledLeftSidebar />
           <StyledRightSidebar />
-          <ReactQueryDevtools initialIsOpen />
+          <ReactQueryDevtools initialIsOpen={false} />
         </ReactQueryCacheProvider>
     </div>
   );

@@ -36,7 +36,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ( props ) => {
         <Button variant={"secondary"} onClick={props.onHide}>
           Cancel
         </Button>
-        <Button variant={`${calculateBtnVariant(props.function)}`} onClick={() => {props.onHide(); props.onConfirm(); }}>
+        <Button variant={`${calculateBtnVariant(props.function)}`} onClick={(e) => {e.preventDefault(); props.onHide(); props.onConfirm(); }}>
           Confirm
         </Button>
       </Modal.Footer>

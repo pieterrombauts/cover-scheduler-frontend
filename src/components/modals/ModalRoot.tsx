@@ -6,7 +6,6 @@ import StyledSessionModal from 'components/modals/SessionModal'
 import StyledStaffEditModal from 'components/modals/StaffEditModal'
 import StyledStaffAddModal from 'components/modals/StaffAddModal'
 import MODAL_CLOSE from 'constants/modal';
-import styled from 'styled-components';
 
 interface ModalRootProps {
   className?: string;

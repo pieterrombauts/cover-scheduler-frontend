@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { STATUS } from 'constants/session';
-import { DateTime } from 'luxon';
 
 const modalSlice = createSlice({
   name: 'modal',

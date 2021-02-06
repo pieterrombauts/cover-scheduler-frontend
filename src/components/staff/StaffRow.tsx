@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { RootState } from 'redux/reducers'
 import { connect, ConnectedProps } from 'react-redux';
@@ -7,9 +7,7 @@ import { Staff } from 'customTypes/staff';
 import StyledAvailabilityWeek from 'components/staff/AvailabilityWeek'
 import { decodeAvail } from 'utils/availEncoding'
 import IconButton from '@material-ui/core/IconButton'
-import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
 import { capitalise, formatMobile } from 'utils/stringFuncs';
 
 interface StaffRowProps {

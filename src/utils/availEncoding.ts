@@ -2,7 +2,7 @@ import { AvailType } from 'customTypes/staff'
 
 export const encodeAvail = (obj: AvailType) => {
   let encoded_string = "";
-  for (const [key, value] of Object.entries(obj)) {
+  for (const [, value] of Object.entries(obj)) {
     if (value) {
       encoded_string = encoded_string + "1";
     } else {

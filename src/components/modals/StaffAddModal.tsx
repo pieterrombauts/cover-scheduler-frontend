@@ -4,13 +4,12 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import StyledStaffInfoForm from 'components/modals/StaffInfoForm'
 import ConfirmationModal from 'components/modals/ConfirmationModal';
-import { capitalise } from 'utils/stringFuncs'
 import { db_insert } from 'db/renderer'
 import { Staff } from 'customTypes/staff';
 import { AvailType } from 'customTypes/staff'
 import { encodeAvail } from 'utils/availEncoding'
 import { useQueryCache } from 'react-query';
-import { STAFF_TYPE, EMPTY_STAFF } from 'constants/staff';
+import { EMPTY_STAFF } from 'constants/staff';
 
 interface StaffAddModalProps {
   className?: string;
@@ -22,33 +21,25 @@ function insertSingleStaff(name: string, email: string, phone: string, type: str
   db_insert('INSERT INTO STAFF (name, email, phone, type, availability) VALUES (?, ?, ?, ?, ?)', [name, email, phone, type, avail]);
 }
 
-// Type definitions for check-boxes and drop-down
-const typeOptions = [
-  {value: STAFF_TYPE.EMPLOYEE, label: capitalise(STAFF_TYPE.EMPLOYEE)},
-  {value: STAFF_TYPE.COVER, label: capitalise(STAFF_TYPE.COVER)}
-]
-
 const StaffAddModal: React.FC<StaffAddModalProps> = ( props ) => {
   const cache = useQueryCache();
 
   const [confirmModalShow, setConfirmModalShow] = useState<boolean>(false);
   const [confirmModalMsg, setConfirmModalMsg] = useState<string>("");
-  const [confirmModalFunc, setConfirmModalFunc] = useState<string>("add");
+  const [confirmModalFunc, ] = useState<string>("add");
   const [validated, setValidated] = useState<boolean>(false);
 
   const [staff, setStaff] = useState<Staff>(EMPTY_STAFF)
 
   const handleValueChange = (field: ("name" | "email" | "phone"), e: React.ChangeEvent<HTMLInputElement>) => {
-    let newState = {...staff};
-    newState[field] = e.currentTarget.value;
-    setStaff(newState);
+    setStaff({...staff, [field]: e.currentTarget.value });
   }
 
   const handleTypeChange = (value: any ) => {
     console.log(value);
     if (value !== null && value !== undefined) {
       if (!Array.isArray(value)) {
-        setStaff({...staff, ["type"]: value.value});
+        setStaff({...staff, type: value.value});
       }
     }
   }
@@ -65,9 +56,7 @@ const StaffAddModal: React.FC<StaffAddModalProps> = ( props ) => {
 
   const handleSubmit = () => {
     insertSingleStaff(staff.name, staff.email, staff.phone, staff.type, encodeAvail(staff.availability as AvailType));
-    setTimeout(() => {
-      cache.invalidateQueries('staff');
-    }, 0)
+    cache.invalidateQueries('staff');
     props.onHide();
   }
 
